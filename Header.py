@@ -44,3 +44,10 @@ def build_query(domain_name,record_type):
     header = DNSHeader(id=id, num_questions=1,flags=RECURSION_DESIRED)
     question = DNSQuestion(name=name,type_=record_type,class_=CLASS_IN)
     return header_to_bytes(header)+question_to_bytes(question)
+
+import socket
+query = build_query("www.exemple.com",1)
+
+sock= socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.sendto(query,("8.8.8.8",53))
+response, _ = sock.recvfrom(1024)
